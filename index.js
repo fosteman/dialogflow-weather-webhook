@@ -39,7 +39,7 @@ const processMessage = (request, respose) => {
 
     let intentMap = new Map();
     intentMap.set('Default welcome intent', welcome);
-    intentMap.set('weather', weather);
+    intentMap.set('weather', async () => await weather(agent));
     agent.handleRequest(intentMap);
 };
 
@@ -65,7 +65,7 @@ const server = app.listen(app.set('port'), () => {
     console.log(`Express running → PORT ${server.address().port}`);
 });
 
-async function requestWeatherForecast(city, date) {
+function requestWeatherForecast(city, date) {
     return new Promise((resolve, reject) => {
         //  query
         let query = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?format=json&num_of_days=1' +
@@ -94,7 +94,7 @@ async function requestWeatherForecast(city, date) {
         ${forecast['sunHour']} hours and a UV index of ${forecast['uvIndex']} on 
         ${forecast['date']}.`;
                     console.log(output);
-                    Promise.resolve(output);
+                    return Promise.resolve(output);
                 });
 
                 res.on('error', error => Promise.reject(`Error calling the weather API: ${error}`));
