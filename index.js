@@ -27,7 +27,7 @@ const processMessage = (request, respose) => {
         let when;
         if (request.body.queryResult.parameters['date'])
             when = request.body.queryResult.parameters['date'];
-        requestWeatherForecast(where, when)
+        return requestWeatherForecast(where, when)
             .then(output => {
                 console.log('Weather intent output:', output);
                 agent.add('Here is what I found:' + output);
