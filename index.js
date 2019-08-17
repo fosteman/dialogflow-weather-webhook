@@ -20,7 +20,7 @@ const processMessage = (request, respose) => {
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
 
-    async function weather(agent) {
+    function weather(agent) {
         // Get the city
         let where = request.body.queryResult.parameters['geo-city']; // a required parameter
         // Get the date (if present)
@@ -28,18 +28,18 @@ const processMessage = (request, respose) => {
         if (request.body.queryResult.parameters['date'])
             when = request.body.queryResult.parameters['date'];
         console.log('requesting weather forecast...');
-        return await requestWeatherForecast(where, when)
+        return requestWeatherForecast(where, when)
             .then(output => {
                 console.log('Weather intent output:', output);
                 agent.add('Here is what I found:' + output);
-                return Promise.resolve();
+                return Promise.resolve(output);
             })
             .catch(err => Promise.resolve('requestWeatherForecast promise rejected for the reason:', err));
     }
 
     let intentMap = new Map();
     intentMap.set('Default welcome intent', welcome);
-    intentMap.set('weather', async () => await weather(agent));
+    intentMap.set('weather', weather);
     agent.handleRequest(intentMap);
 };
 
@@ -66,7 +66,6 @@ const server = app.listen(app.set('port'), () => {
 });
 
 function requestWeatherForecast(city, date) {
-    return new Promise((resolve, reject) => {
         //  query
         let query = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?format=json&num_of_days=1' +
             '&q=' + encodeURIComponent(city) + '&key=' + wwoApiKey + '&date=' + date;
@@ -97,8 +96,7 @@ function requestWeatherForecast(city, date) {
                     return Promise.resolve(output);
                 });
 
-                res.on('error', error => Promise.reject(`Error calling the weather API: ${error}`));
+                res.on('error', error => Promise.resolve(`Error calling the weather API: ${error}`));
             })
-            .catch(err => Promise.reject(`Error resolving promise ${err}`));
-    });
+            .catch(err => Promise.resolve(`Error resolving promise ${err}`));
 }
