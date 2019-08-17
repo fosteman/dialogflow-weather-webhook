@@ -27,13 +27,14 @@ const processMessage = (request, respose) => {
         let when;
         if (request.body.queryResult.parameters['date'])
             when = request.body.queryResult.parameters['date'];
+        console.log('requesting weather forecast...');
         return requestWeatherForecast(where, when)
             .then(output => {
                 console.log('Weather intent output:', output);
                 agent.add('Here is what I found:' + output);
                 return Promise.resolve();
             })
-            .catch(err => consol.error('requestWeatherForecast promise rejected for the reason:', err));
+            .catch(err => Promise.resolve('requestWeatherForecast promise rejected for the reason:', err));
     }
 
     let intentMap = new Map();
