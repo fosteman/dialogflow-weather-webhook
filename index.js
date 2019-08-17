@@ -20,16 +20,19 @@ const processMessage = (request, respose) => {
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
 
-    async function weather(agent) {
+    function weather(agent) {
         // Get the city
         let where = request.body.queryResult.parameters['geo-city']; // a required parameter
         // Get the date (if present)
         let when;
         if (request.body.queryResult.parameters['date'])
             when = request.body.queryResult.parameters['date'];
-        let output = await requestWeatherForecast(where, when);
-        console.log('Weather intent output:', output);
-        agent.add(output);
+        requestWeatherForecast(where, when)
+            .then(output => {
+                console.log('Weather intent output:', output);
+                agent.add(output);
+            })
+            .catch(err => consol.error('requestWeatherForecast promise rejected for the reason:', err));
     }
 
     let intentMap = new Map();
@@ -59,12 +62,11 @@ async function requestWeatherForecast(city, date) {
 
         // perform http get request
         axios.get(query)
-            .then((res, rej) => {
+            .then(res => {
                 //API responds by opening a stream for data
                 let body = '';
-                res.on('data', chunk => {
-                    body += chunk;
-                }); // store each response chunk
+                res.on('data', chunk => body += chunk ); // store each response chunk
+
                 res.on('end', () => {
                     // categorize the data, following https://www.worldweatheronline.com/developer/api/docs/local-city-town-weather-api.aspx
                     let response = JSON.parse(body);
@@ -78,14 +80,12 @@ async function requestWeatherForecast(city, date) {
         ${location['query']} are ${currentConditions} with total sun hour  wind  of
         ${forecast['sunHour']} hours and a UV index of ${forecast['uvIndex']} on 
         ${forecast['date']}.`;
-
                     console.log(output);
-                    resolve(output);
+                    Promise.resolve(output);
                 });
-                res.on('error', (error) => {
-                    console.log(`Error calling the weather API: ${error}`);
-                    reject();
-                });
-            });
+
+                res.on('error', error => Promise.reject(`Error calling the weather API: ${error}`));
+            })
+            .catch(err => Promise.reject(`Error resolving promise ${err}`));
     });
 }
