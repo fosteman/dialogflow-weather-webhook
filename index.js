@@ -49,7 +49,7 @@ const server = app.listen(app.set('port'), () => {
     console.log(`Express running → PORT ${server.address().port}`);
 });
 
-const requestWeatherForecast = (city, date) => {
+async function requestWeatherForecast(city, date) {
     return new Promise((resolve, reject) => {
         //  query
         let query = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?format=json&num_of_days=1' +
@@ -88,4 +88,4 @@ const requestWeatherForecast = (city, date) => {
                 });
             });
     });
-};
+}
