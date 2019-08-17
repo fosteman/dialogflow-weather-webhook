@@ -55,7 +55,7 @@ app.get('/', (req, res) => res.send('' +
     '<title></title>\n' +
     '</head>\n' +
     '<body>\n' +
-    '<iframe src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
+    '<iframe width="100%" height="800px" src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
     '</body>\n' +
     '</html>\n'));
 
