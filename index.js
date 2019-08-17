@@ -31,6 +31,7 @@ const processMessage = (request, respose) => {
             .then(output => {
                 console.log('Weather intent output:', output);
                 agent.add(output);
+                return Promise.resolve();
             })
             .catch(err => consol.error('requestWeatherForecast promise rejected for the reason:', err));
     }
@@ -42,9 +43,20 @@ const processMessage = (request, respose) => {
 };
 
 app.post('/', (req, res) => {
-    console.log('chat post log', req.body);
     processMessage(req, res);
+
 });
+app.get('/', (req, res) => res.send('' +
+    '<!DOCTYPE html>\n' +
+    '<html lang="en">\n' +
+    '<head>\n' +
+    '<meta charset="utf-8">\n' +
+    '<title></title>\n' +
+    '</head>\n' +
+    '<body>\n' +
+    '<iframe height="430" width="350" src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
+    '</body>\n' +
+    '</html>\n'));
 
 app.set('port', process.env.PORT || 8080);
 // service endpoint
