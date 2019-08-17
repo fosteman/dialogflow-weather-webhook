@@ -20,7 +20,7 @@ const processMessage = (request, respose) => {
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
 
-    function weather(agent) {
+    async function weather(agent) {
         // Get the city
         let where = request.body.queryResult.parameters['geo-city']; // a required parameter
         // Get the date (if present)
@@ -28,7 +28,7 @@ const processMessage = (request, respose) => {
         if (request.body.queryResult.parameters['date'])
             when = request.body.queryResult.parameters['date'];
         console.log('requesting weather forecast...');
-        return requestWeatherForecast(where, when)
+        return await requestWeatherForecast(where, when)
             .then(output => {
                 console.log('Weather intent output:', output);
                 agent.add('Here is what I found:' + output);
