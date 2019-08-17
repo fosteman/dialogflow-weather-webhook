@@ -30,7 +30,7 @@ const processMessage = (request, respose) => {
         requestWeatherForecast(where, when)
             .then(output => {
                 console.log('Weather intent output:', output);
-                agent.add(output);
+                agent.add('Here is what I found:' + output);
                 return Promise.resolve();
             })
             .catch(err => consol.error('requestWeatherForecast promise rejected for the reason:', err));
@@ -54,7 +54,7 @@ app.get('/', (req, res) => res.send('' +
     '<title></title>\n' +
     '</head>\n' +
     '<body>\n' +
-    '<iframe height="430" width="350" src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
+    '<iframe src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
     '</body>\n' +
     '</html>\n'));
 
