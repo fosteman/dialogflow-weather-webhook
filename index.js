@@ -25,8 +25,8 @@ const processMessage = (request, respose) => {
     }
     function weather(agent) {
         //to handle the promise and all
-        return requestWeatherForecast(agent);
-        //resolve();
+        requestWeatherForecast(agent);
+        resolve();
     }
 
     function requestWeatherForecast(agent) {
@@ -94,7 +94,7 @@ const processMessage = (request, respose) => {
 
 
     let intentMap = new Map();
-    intentMap.set('Default welcome intent', welcome); //fix the label
+    intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('weather', weather);
     agent.handleRequest(intentMap);
 };
