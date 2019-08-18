@@ -23,13 +23,12 @@ const processMessage = (request, response) => {
     }
 
     function weather(agent) {
-        requestWeatherForecast()
+        return requestWeatherForecast()
             .then(composedWeatherReport => {
                 console.info("Here's what I fetched: ", composedWeatherReport);
-                agent.add("Agent: Here's what I fetched: ", composedWeatherReport);
+                return agent.add("Agent: Here's what I fetched: ", composedWeatherReport);
             })
             .catch();
-        resolve();
     }
 
     function requestWeatherForecast() {
