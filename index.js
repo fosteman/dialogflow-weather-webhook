@@ -25,11 +25,11 @@ const processMessage = (request, respose) => {
     }
     function weather(agent) {
         //to handle the promise and all
-        requestWeatherForecast(agent);
-        resolve();
+        return requestWeatherForecast(agent);
+        //resolve();
     }
 
-    function requestWeatherForecast(agent) {
+    async function requestWeatherForecast(agent) {
         let city = request.body.queryResult.parameters['geo-city']; // a required parameter
         let date = request.body.queryResult.parameters['date'];
         const weatherRequestOptions = {
