@@ -17,11 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const processMessage = (request, response) => {
     const agent = new WebhookClient({ request, response });
 
-    function welcome(agent) {
-        agent.add(`Hey, welcome to Fosteman's Weather Teller !`);
-        agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
-    }
-
     function weather(agent) {
         return requestWeatherForecast()
             .then(composedWeatherReport => {
@@ -94,7 +89,6 @@ const processMessage = (request, response) => {
     }
 
     let intentMap = new Map();
-    //intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('weather', weather);
     agent.handleRequest(intentMap);
 };
