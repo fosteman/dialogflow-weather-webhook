@@ -67,7 +67,7 @@ const processMessage = (request, response) => {
                                    wind,
                                    description
                                }) =>
-            `Conditions in the ${location} at ${time}
+            `Conditions in ${location} at ${time}
         are ${temp_C} degrees, wind speed is ${wind} kmph,
         while cloud coverage is ${cloud_cover},
         overall ${description}
@@ -93,9 +93,8 @@ const processMessage = (request, response) => {
         });
     }
 
-
     let intentMap = new Map();
-    intentMap.set('Default Welcome Intent', welcome);
+    //intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('weather', weather);
     agent.handleRequest(intentMap);
 };
@@ -114,7 +113,7 @@ app.get('/',
         '<title></title>\n' +
         '</head>\n' +
         '<body>\n' +
-        '<iframe width="100%" height="340px" src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
+        '<iframe width="100%" height="800px" src="https://bot.dialogflow.com/e6d3e274-3ca2-41a4-8154-950ed6c785a9"></iframe>' +
         '</body>\n' +
         '</html>\n'
     )
