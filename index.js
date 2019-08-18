@@ -13,8 +13,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
 const processMessage = (request, respose) => {
     const agent = new WebhookClient({ request, respose });
     console.info('Dialogflow Request Received!');
@@ -24,12 +22,11 @@ const processMessage = (request, respose) => {
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
     function weather(agent) {
-        //to handle the promise and all
-        requestWeatherForecast(agent);
-        resolve();
+        return requestWeatherForecast(agent).then(success => console.error('success')).catch();
     }
 
     async function requestWeatherForecast(agent) {
+        console.info('weather forecast invoked');
         let city = request.body.queryResult.parameters['geo-city']; // a required parameter
         let date = request.body.queryResult.parameters['date'];
         const weatherRequestOptions = {
