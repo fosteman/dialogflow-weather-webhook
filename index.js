@@ -1,5 +1,6 @@
 require('dotenv').config({ path: 'variables.env' });
 
+const moment = require('moment');
 const weatherAPIEndpoint = 'http://api.worldweatheronline.com/premium/v1/weather.ashx/';
 const wwoApiKey = process.env.WEATHER_API;
 const express = require('express');
@@ -30,22 +31,23 @@ const processMessage = (request, response) => {
             .catch();
     }
 
-    function requestWeatherForecast(agent) {
-        console.info('weather forecast invoked');
+    function requestWeatherForecast() {
         let city = request.body.queryResult.parameters['geo-city']; // a required parameter
         let date = request.body.queryResult.parameters['date'];
-        const weatherRequestOptions = {
-            method: 'get',
-            params: {
-                format: 'json',
-                num_of_days: 1,
-                q: encodeURIComponent(city),
-                key: wwoApiKey,
-                date
-            },
-            timeout: 4500, //5s is Dialogflow's restriction
-            responseType: 'json'
-        };
+        function weatherRequestOptions() {
+            return {
+                method: 'get',
+                params: {
+                    format: 'json',
+                    num_of_days: 1,
+                    q: encodeURIComponent(city),
+                    key: wwoApiKey,
+                    date: moment(date).format('YYYY-MM-DD')
+                },
+                timeout: 4500, //5s is Dialogflow's restriction
+                responseType: 'json'
+            };
+        }
         const forecast = (location, time, cloud_cover, temp_C, wind, description) => {
             return {
                 location,
@@ -71,7 +73,7 @@ const processMessage = (request, response) => {
         `;
 
         return new Promise((resolve, reject) => {
-            axios.get(weatherAPIEndpoint, weatherRequestOptions)
+            axios.get(weatherAPIEndpoint, weatherRequestOptions())
                 .then(res => res.data.data)
                 .then(data => {
                     // generate forecast
