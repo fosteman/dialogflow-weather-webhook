@@ -3,6 +3,7 @@ require('dotenv').config({ path: 'variables.env' });
 const moment = require('moment');
 const weatherAPIEndpoint = 'http://api.worldweatheronline.com/premium/v1/weather.ashx/';
 const wwoApiKey = process.env.WEATHER_API;
+console.log(wwoApiKey);
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -41,7 +42,7 @@ const processMessage = (request, response) => {
                     format: 'json',
                     num_of_days: 1,
                     q: encodeURIComponent(city),
-                    key: wwoApiKey,
+                    key: process.env.WEATHER_API,
                     date: moment(date).format('YYYY-MM-DD')
                 },
                 timeout: 4500, //5s is Dialogflow's restriction
