@@ -25,7 +25,7 @@ const processMessage = (request, response) => {
     function weather(agent) {
         return requestWeatherForecast()
             .then(composedWeatherReport => {
-                let simplifiedString = composedWeatherReport.replace(/\n|\r/g, "");
+                let simplifiedString = composedWeatherReport.replace(/\s+/g, ' ').trim();
                 console.info("Here's what I fetched: ", simplifiedString);
                 return agent.add("Agent: Here's what I fetched: " + simplifiedString);
             })
