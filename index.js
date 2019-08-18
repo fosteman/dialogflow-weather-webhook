@@ -23,6 +23,12 @@ const processMessage = (request, respose) => {
         agent.add(`Hey, welcome to Fosteman's Weather Teller !`);
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
+    function weather(agent) {
+        //to handle the promise and all
+        return requestWeatherForecast(agent);
+        //resolve();
+    }
+
     function requestWeatherForecast(agent) {
         let city = request.body.queryResult.parameters['geo-city']; // a required parameter
         let date = request.body.queryResult.parameters['date'];
@@ -89,7 +95,7 @@ const processMessage = (request, respose) => {
 
     let intentMap = new Map();
     intentMap.set('Default welcome intent', welcome); //fix the label
-    intentMap.set('weather', requestWeatherForecast);
+    intentMap.set('weather', weather);
     agent.handleRequest(intentMap);
 };
 
