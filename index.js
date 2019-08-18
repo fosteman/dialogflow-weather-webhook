@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const processMessage = (request, respose) => {
     const agent = new WebhookClient({ request, respose });
-    console.log('Dialogflow Request Received!');
+    console.info('Dialogflow Request Received!');
 
     function welcome(agent) {
         agent.add(`Hey, welcome to Fosteman's Weather Teller !`);
@@ -25,8 +25,8 @@ const processMessage = (request, respose) => {
     }
     function weather(agent) {
         //to handle the promise and all
-        return requestWeatherForecast(agent);
-        //resolve();
+        requestWeatherForecast(agent);
+        resolve();
     }
 
     async function requestWeatherForecast(agent) {
