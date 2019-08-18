@@ -1,6 +1,6 @@
 {
   "name": "dialogflow-weather-webhook",
-  "description": "",
+  "description": "weather webhook as fulfillment for Dialogflow agent",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
