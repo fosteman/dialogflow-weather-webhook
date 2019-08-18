@@ -26,9 +26,10 @@ const processMessage = (request, response) => {
         requestWeatherForecast()
             .then(composedWeatherReport => {
                 console.info("Here's what I fetched: ", composedWeatherReport);
-                agent.add("Here's what I fetched: ", composedWeatherReport);
+                agent.add("Agent: Here's what I fetched: ", composedWeatherReport);
             })
             .catch();
+        resolve();
     }
 
     function requestWeatherForecast() {
@@ -76,18 +77,17 @@ const processMessage = (request, response) => {
             axios.get(weatherAPIEndpoint, weatherRequestOptions())
                 .then(res => res.data.data)
                 .then(data => {
-                    // generate forecast
-                    let instance = forecast(
-                        data.request[0].query, //location
-                        data.current_condition[0].observation_time, //time
-                        data.current_condition[0].cloudcover, //cloud coverage
-                        data.current_condition[0].temp_C, // measured temperature
-                        data.current_condition[0].windspeedKmph, //wind
-                        data.current_condition[0].weatherDesc[0].value //description
-                    );
-                    let FinalWeatherReport = weatherReport(instance);
-                    console.log('Final weather report: ', FinalWeatherReport);
-                    return resolve(FinalWeatherReport);
+                    // generate final weather report
+                    return resolve(
+                        weatherReport(
+                            forecast(
+                                data.request[0].query, //location
+                                data.current_condition[0].observation_time, //time
+                                data.current_condition[0].cloudcover, //cloud coverage
+                                data.current_condition[0].temp_C, // measured temperature
+                                data.current_condition[0].windspeedKmph, //wind
+                                data.current_condition[0].weatherDesc[0].value //description
+                    )));
                 })
                 .catch(rej => resolve(rej));
         });
