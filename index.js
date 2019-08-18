@@ -13,8 +13,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const processMessage = (request, respose) => {
-    const agent = new WebhookClient({ request, respose });
+const processMessage = (request, response) => {
+    const agent = new WebhookClient({ request, response });
     console.info('Dialogflow Request Received!');
 
     function welcome(agent) {
@@ -22,10 +22,15 @@ const processMessage = (request, respose) => {
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
     function weather(agent) {
-        return requestWeatherForecast(agent).then(success => console.error('success')).catch();
+        requestWeatherForecast()
+            .then(composedWeatherReport => {
+                console.error(composedWeatherReport);
+                agent.add(composedWeatherReport);
+            })
+            .catch();
     }
 
-    async function requestWeatherForecast(agent) {
+    function requestWeatherForecast(agent) {
         console.info('weather forecast invoked');
         let city = request.body.queryResult.parameters['geo-city']; // a required parameter
         let date = request.body.queryResult.parameters['date'];
@@ -65,8 +70,6 @@ const processMessage = (request, respose) => {
         overall ${description}
         `;
 
-        let FinalWeatherReport = ''; //I wonder if I could return a string right from axios pipe..
-
         return new Promise((resolve, reject) => {
             axios.get(weatherAPIEndpoint, weatherRequestOptions)
                 .then(res => res.data.data)
@@ -80,10 +83,9 @@ const processMessage = (request, respose) => {
                         data.current_condition[0].windspeedKmph, //wind
                         data.current_condition[0].weatherDesc[0].value //description
                     );
-                    FinalWeatherReport = weatherReport(instance);
+                    let FinalWeatherReport = weatherReport(instance);
                     console.log('Final weather report: ', FinalWeatherReport);
-                    agent.add(FinalWeatherReport);
-                    return resolve();
+                    return resolve(FinalWeatherReport);
                 })
                 .catch(rej => resolve(rej));
         });
