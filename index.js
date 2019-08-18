@@ -3,7 +3,6 @@ require('dotenv').config({ path: 'variables.env' });
 const moment = require('moment');
 const weatherAPIEndpoint = 'http://api.worldweatheronline.com/premium/v1/weather.ashx/';
 const wwoApiKey = process.env.WEATHER_API;
-console.log(wwoApiKey);
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -17,17 +16,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const processMessage = (request, response) => {
     const agent = new WebhookClient({ request, response });
-    console.info('Dialogflow Request Received!');
 
     function welcome(agent) {
         agent.add(`Hey, welcome to Fosteman's Weather Teller !`);
         agent.add(new Suggestion(`Ask me what's the forecast for tomorrow !`));
     }
+
     function weather(agent) {
         requestWeatherForecast()
             .then(composedWeatherReport => {
-                console.error(composedWeatherReport);
-                agent.add(composedWeatherReport);
+                console.info("Here's what I fetched: ", composedWeatherReport);
+                agent.add("Here's what I fetched: ", composedWeatherReport);
             })
             .catch();
     }
@@ -42,7 +41,7 @@ const processMessage = (request, response) => {
                     format: 'json',
                     num_of_days: 1,
                     q: encodeURIComponent(city),
-                    key: process.env.WEATHER_API,
+                    key: wwoApiKey || "key's missing",
                     date: moment(date).format('YYYY-MM-DD')
                 },
                 timeout: 4500, //5s is Dialogflow's restriction
