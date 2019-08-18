@@ -14,13 +14,14 @@
   "dependencies": {
     "actions-on-google": "^2.2.0",
     "axios": "^0.19.0",
+    "body-parser": "latest",
+    "cors": "latest",
     "dialogflow": "^0.6.0",
     "dialogflow-fulfillment": "0.5.0",
     "dotenv": "^8.0.0",
+    "express": "latest",
     "firebase-admin": "^5.13.1",
     "firebase-functions": "^2.0.2",
-    "cors": "latest",
-    "express": "latest",
-    "body-parser": "latest"
+    "qs": "^6.8.0"
   }
 }
