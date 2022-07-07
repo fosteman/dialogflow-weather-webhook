@@ -22,7 +22,7 @@
     "express": "latest",
     "firebase-admin": "^5.13.1",
     "firebase-functions": "^2.0.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "qs": "^6.8.0"
   }
 }
