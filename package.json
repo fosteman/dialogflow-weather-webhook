@@ -20,8 +20,8 @@
     "dialogflow-fulfillment": "0.5.0",
     "dotenv": "^8.0.0",
     "express": "latest",
-    "firebase-admin": "^5.13.1",
-    "firebase-functions": "^2.0.2",
+    "firebase-admin": "^11.4.1",
+    "firebase-functions": "^4.1.1",
     "moment": "^2.24.0",
     "qs": "^6.8.0"
   }
